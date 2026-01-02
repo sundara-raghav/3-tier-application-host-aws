@@ -3,16 +3,20 @@
 <section class="card">
     <div class="card-header">
         <div>
-            <p class="eyebrow">Topic</p>
+            <p class="eyebrow">Quiz Challenge</p>
             <h1>{{ title }}</h1>
         </div>
-        <div class="meta">Hello, {{ username }}</div>
+        <div class="meta" style="text-align: right;">
+            <p style="margin: 0 0 4px 0;">Welcome back</p>
+            <strong>{{ username }}</strong>
+        </div>
     </div>
     <form method="post" action="{{ url_for('main.submit') }}" class="quiz-form">
         <input type="hidden" name="topic" value="{{ topic }}">
         {% for q in questions %}
         <div class="question">
-            <h2>Q{{ loop.index }}. {{ q.question }}</h2>
+            <h2>Question {{ loop.index }} of {{ questions|length }}</h2>
+            <p style="margin: 12px 0 16px 0; font-size: 16px; font-weight: 500;">{{ q.question }}</p>
             <div class="options">
                 {% for opt in q.options %}
                 <label class="option">
