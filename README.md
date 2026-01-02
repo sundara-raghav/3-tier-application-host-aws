@@ -52,18 +52,6 @@ A modern, responsive quiz application built with Python Flask and deployed on AW
 
 ## 🛠️ Tech Stack
 
-### Backend
-- **Python 3.9+**
-- **Flask** - Web framework
-- **Flask-CORS** - Cross-origin resource sharing
-- **Boto3** - AWS SDK for Python
-- **python-dotenv** - Environment variable management
-
-### Frontend
-- **HTML5**
-- **CSS3** (Responsive design with media queries)
-- **Vanilla JavaScript** (Timer, form handling)
-
 ### Infrastructure
 - **AWS EC2** - Application hosting
 - **AWS DynamoDB** - NoSQL database
@@ -72,15 +60,6 @@ A modern, responsive quiz application built with Python Flask and deployed on AW
 
 ### Development
 - **GitHub Codespaces** - Cloud development environment
-- **Git** - Version control
-
-## 📦 Prerequisites
-
-### For Local Development:
-- Python 3.9 or higher
-- pip (Python package manager)
-- AWS CLI configured with credentials
-- Git
 
 ### For AWS Deployment:
 - AWS Account with appropriate permissions
@@ -158,7 +137,7 @@ Terraform will create:
 ### Step 5: Access Your Application
 After deployment completes, Terraform will output:
 \`\`\`
-ec2_public_ip = "13.202.245.5"
+ec2_public_ip = ""
 \`\`\`
 
 Access your app at: \`http://<EC2_PUBLIC_IP>:5000\`
@@ -259,37 +238,6 @@ GET /scoreboard?topic=python&format=json
   "topics": ["python", "aws", "devops", ...],
   "selected_topic": "python"
 }
-\`\`\`
-
-## 📁 Project Structure
-
-\`\`\`
-3-tier-application-host-aws/
-├── app/
-│   ├── __init__.py           # Flask app factory
-│   ├── routes.py             # API endpoints
-│   ├── services/
-│   │   └── dynamo.py         # DynamoDB service layer
-│   ├── data/
-│   │   └── questions.json    # Quiz questions (10 topics × 20 questions)
-│   ├── templates/
-│   │   ├── base.html         # Base template
-│   │   ├── index.html        # Home page
-│   │   ├── quiz.html         # Quiz page
-│   │   ├── result.html       # Results page
-│   │   └── scoreboard.html   # Leaderboard page
-│   └── static/
-│       └── css/
-│           └── styles.css    # Responsive styles
-├── infra/
-│   ├── main.tf               # Terraform main configuration
-│   ├── variables.tf          # Input variables
-│   ├── outputs.tf            # Output values
-│   └── terraform.tfvars      # Variable values
-├── run.py                    # Application entry point
-├── requirements.txt          # Python dependencies
-├── .gitignore                # Git ignore rules
-└── README.md                 # This file
 \`\`\`
 
 ## 🎨 UI Features
@@ -484,7 +432,5 @@ This project is licensed under the MIT License.
 - GitHub Codespaces for development environment
 
 ---
-
-**Live Demo**: http://13.202.245.5:5000/ 🚀
 
 **Last Updated**: January 2, 2026
