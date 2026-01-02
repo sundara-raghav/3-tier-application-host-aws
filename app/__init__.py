@@ -35,7 +35,6 @@ def create_app() -> Flask:
     app = Flask(__name__, template_folder="templates", static_folder="static")
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "dev-secret-key")
 
-    # Enable CORS for S3 frontend
     CORS(app, resources={r"/*": {"origins": "*"}})
 
     aws_region = os.getenv("AWS_REGION", "us-east-1")

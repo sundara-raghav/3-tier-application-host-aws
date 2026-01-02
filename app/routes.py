@@ -74,7 +74,6 @@ def quiz(topic: str):
 
 @bp.route("/submit", methods=["POST"])
 def submit():
-    # JSON mode supports stateless API clients (e.g., S3-hosted frontend)
     if _wants_json():
         payload = request.get_json(force=True)
         topic = payload.get("topic")

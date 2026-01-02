@@ -214,5 +214,3 @@ resource "aws_dynamodb_table" "scores" {
     type = "S"
   }
 }
-
-# S3 removed - app is self-contained on EC2
