@@ -33,7 +33,50 @@ data "aws_ami" "al2023" {
   }
 }
 
-# IAM removed - no S3 access needed
+# IAM Role for EC2 to access DynamoDB
+resource "aws_iam_role" "quiz_ec2_role" {
+  name = "quiz-ec2-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "ec2.amazonaws.com"
+      }
+    }]
+  })
+}
+
+# Policy for DynamoDB access
+resource "aws_iam_role_policy" "quiz_dynamodb_policy" {
+  name = "quiz-dynamodb-policy"
+  role = aws_iam_role.quiz_ec2_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Action = [
+        "dynamodb:GetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:Query",
+        "dynamodb:Scan"
+      ]
+      Resource = [
+        aws_dynamodb_table.users.arn,
+        aws_dynamodb_table.scores.arn
+      ]
+    }]
+  })
+}
+
+resource "aws_iam_instance_profile" "quiz_ec2_profile" {
+  name = "quiz-ec2-profile"
+  role = aws_iam_role.quiz_ec2_role.name
+}
 
 resource "aws_security_group" "quiz_sg" {
   name        = "quiz-app-sg"
@@ -75,17 +118,22 @@ resource "aws_security_group" "quiz_sg" {
 resource "aws_instance" "quiz_ec2" {
   ami                         = data.aws_ami.al2023.id
   instance_type               = var.ec2_instance_type
+  iam_instance_profile        = aws_iam_instance_profile.quiz_ec2_profile.name
   vpc_security_group_ids      = [aws_security_group.quiz_sg.id]
   associate_public_ip_address = true
-  key_name                    = var.ec2_key_name
+  key_name                    = "quiz-debug-key"
   subnet_id                   = element(data.aws_subnets.default.ids, 0)
 
-  user_data = <<-EOF
+  user_data = base64encode(<<-EOF
               #!/bin/bash
-              set -e
+              set -x
+              exec > >(tee /var/log/user-data.log)
+              exec 2>&1
+              
               yum update -y
-              yum install -y python3 git
+              yum install -y python3 python3-pip git
               pip3 install --upgrade pip
+              
               useradd -m quiz || true
               mkdir -p /opt/quiz-app
               chown -R quiz:quiz /opt/quiz-app
@@ -102,7 +150,11 @@ resource "aws_instance" "quiz_ec2" {
               fi
               
               cd /opt/quiz-app
-              pip3 install -q -r requirements.txt 2>/dev/null || pip3 install -q flask python-dotenv boto3 flask-cors
+              echo "Installing requirements..."
+              pip3 install -q -r requirements.txt 2>&1 | tee -a /tmp/pip-install.log || {
+                echo "pip3 install failed, trying manual install"
+                pip3 install -q flask python-dotenv boto3 flask-cors
+              }
               
               cat >/etc/systemd/system/quiz.service <<'SERVICE'
               [Unit]
@@ -116,6 +168,8 @@ resource "aws_instance" "quiz_ec2" {
               Environment="AWS_REGION=ap-south-1"
               ExecStart=/usr/bin/python3 /opt/quiz-app/run.py
               Restart=always
+              StandardOutput=journal
+              StandardError=journal
 
               [Install]
               WantedBy=multi-user.target
@@ -124,7 +178,9 @@ resource "aws_instance" "quiz_ec2" {
               systemctl daemon-reload
               systemctl enable quiz.service
               systemctl start quiz.service
+              echo "Quiz service started"
               EOF
+  )
 
   tags = {
     Name = "quiz-app"
