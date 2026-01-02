@@ -1,0 +1,5 @@
+aws_region          = "ap-south-1"
+ec2_instance_type   = "t3.micro"
+ec2_key_name        = "quiz-deploy-key"
+dynamo_users_table  = "quiz_users"
+dynamo_scores_table = "quiz_scores"

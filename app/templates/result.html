@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="card success">
+    <h1>Nice work, {{ username }}!</h1>
+    <p>You scored <strong>{{ score }}</strong> out of <strong>{{ total }}</strong> on {{ topic|title }}.</p>
+    <p class="muted">Attempt ID: {{ attempt_id }}</p>
+    <div class="actions">
+        <a class="btn-secondary" href="{{ url_for('main.quiz', topic=topic) }}">Retake Topic</a>
+        <a class="btn-primary" href="{{ url_for('main.scoreboard', topic=topic) }}">View Scoreboard</a>
+    </div>
+</section>
+{% endblock %}

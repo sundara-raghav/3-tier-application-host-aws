@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="card">
+    <div class="card-header">
+        <div>
+            <p class="eyebrow">Topic</p>
+            <h1>{{ title }}</h1>
+        </div>
+        <div class="meta">Hello, {{ username }}</div>
+    </div>
+    <form method="post" action="{{ url_for('main.submit') }}" class="quiz-form">
+        <input type="hidden" name="topic" value="{{ topic }}">
+        {% for q in questions %}
+        <div class="question">
+            <h2>Q{{ loop.index }}. {{ q.question }}</h2>
+            <div class="options">
+                {% for opt in q.options %}
+                <label class="option">
+                    <input type="radio" name="{{ q.id }}" value="{{ opt }}" required>
+                    <span>{{ opt }}</span>
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn-primary">Submit Quiz</button>
+    </form>
+</section>
+{% endblock %}

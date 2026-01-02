@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="card">
+    <h1>Start a Quiz</h1>
+    <form method="post" action="{{ url_for('main.start') }}" class="form-grid">
+        <label for="username">Your Name</label>
+        <input id="username" name="username" type="text" placeholder="Jane Doe" required>
+
+        <label for="topic">Topic</label>
+        <select id="topic" name="topic" required>
+            <option value="" disabled selected>Select a topic</option>
+            {% for topic in topics %}
+            <option value="{{ topic }}">{{ topic|title }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="btn-primary">Start Quiz</button>
+    </form>
+</section>
+{% endblock %}

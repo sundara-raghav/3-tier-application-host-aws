@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Application</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div>
+        <h1>Quiz App</h1>
+        <p class="muted">Test your knowledge</p>
+      </div>
+      <button onclick="setApiBase()" style="height:fit-content">Configure API</button>
+    </header>
+
+    <div id="setup" class="panel">
+      <div class="form">
+        <label>Your Name</label>
+        <input type="text" id="username" placeholder="Enter your name" required>
+        
+        <label>Select Topic</label>
+        <select id="topic"></select>
+        
+        <button onclick="startQuiz()">Start Quiz</button>
+        <button onclick="loadScoreboard()" style="background: linear-gradient(135deg, #22c55e, #16a34a);">View Scoreboard</button>
+      </div>
+    </div>
+
+    <div id="quiz-area" class="panel" style="display:none;">
+      <div id="timer" class="timer"></div>
+      <div id="questions-container"></div>
+      <button onclick="submitQuiz()">Submit Quiz</button>
+    </div>
+
+    <div id="result" class="panel" style="display:none;">
+      <h2>Quiz Results</h2>
+      <div id="result-text" class="result"></div>
+      <button onclick="showSetup()">Take Another Quiz</button>
+      <button onclick="loadScoreboard()" style="background: linear-gradient(135deg, #22c55e, #16a34a);">View Scoreboard</button>
+    </div>
+
+    <div id="scoreboard-panel" class="panel" style="display:none;">
+      <div class="row">
+        <h2>Scoreboard</h2>
+        <button onclick="loadScoreboard()">Refresh</button>
+      </div>
+      <div id="scoreboard-container"></div>
+      <button onclick="showSetup()" style="margin-top:20px">Back to Quiz</button>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
