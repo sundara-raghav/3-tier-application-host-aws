@@ -1,6 +1,6 @@
 # 🎯 Quiz Web Application - AWS Cloud Deployment
 
-A modern, responsive quiz application built with Python Flask and deployed on AWS infrastructure. Features multiple quiz topics, real-time scoring, and a global leaderboard.
+A modern, responsive quiz application built with Python Flask and deployed on AWS infrastructure. Features multiple quiz topics, real-time scoring, a global leaderboard, and a Dockerized runtime for local development and deployment.
 
 ## �� Table of Contents
 - [Features](#features)
@@ -8,6 +8,7 @@ A modern, responsive quiz application built with Python Flask and deployed on AW
 - [Tech Stack](#tech-stack)
 - [Prerequisites](#prerequisites)
 - [Local Development](#local-development)
+- [Docker](#docker)
 - [AWS Deployment](#aws-deployment)
 - [API Endpoints](#api-endpoints)
 - [Project Structure](#project-structure)
@@ -57,6 +58,7 @@ A modern, responsive quiz application built with Python Flask and deployed on AW
 - **AWS DynamoDB** - NoSQL database
 - **Terraform** - Infrastructure as Code
 - **Systemd** - Service management on EC2
+- **Docker** - Container runtime for local and registry-based deployment
 
 ### Development
 - **GitHub Codespaces** - Cloud development environment
@@ -257,6 +259,30 @@ GET /scoreboard?topic=python&format=json
 - Smaller fonts for readability
 - Full-width forms
 - Simplified scoreboard (rank, user, score)
+
+## 🐳 Docker
+
+The project now includes a production-ready Docker image.
+
+Build the image locally:
+
+```bash
+docker build -t quiz-app:local .
+```
+
+Run the local image:
+
+```bash
+docker run --rm -p 5000:5000 quiz-app:local
+```
+
+Run the published image from Docker Hub:
+
+```bash
+docker run --rm -p 5000:5000 sundararaghav0306/3-tier-application-host-aws:latest
+```
+
+The container starts with Gunicorn and serves the Flask app on `0.0.0.0:5000`.
 
 ### Quiz Options
 - Smooth hover animations (4px slide effect)
